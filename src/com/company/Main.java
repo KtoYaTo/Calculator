@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.converter.RomanToArabic;
+import com.company.core.Calculator;
 import com.company.exception.MathematicalException;
 
 import java.util.Scanner;

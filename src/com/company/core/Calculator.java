@@ -1,4 +1,4 @@
-package com.company;
+package com.company.core;
 
 import com.company.converter.RomanToArabic;
 import com.company.exception.MathematicalException;
@@ -8,6 +8,7 @@ import com.company.impl.Roman;
 import com.company.transfer.Dial;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Calculator implements Arabic, Roman, Operator {
     private String instance;
@@ -49,9 +50,6 @@ public class Calculator implements Arabic, Roman, Operator {
         if ((getDial(0) != getDial(1)) || dial == null) {
             throw new MathematicalException("Error! Dials not right!");
         }
-        if (getDial() == Dial.ROMAN) {
-
-        }
     }
 
     public int calculation(boolean testAll) throws MathematicalException {
@@ -91,19 +89,26 @@ public class Calculator implements Arabic, Roman, Operator {
     }
 
     public Dial getDial(int number) {
+        int keyArabicNumbers = 0;
+        int keyRomanNumbers = 0;
         String[] parts = instance.split("[" + getOperatorUsed() + "]");
-        if (Arrays.asList(arabicNumbers).contains(parts[number])) {
+        keyArabicNumbers = Arrays.binarySearch(arabicNumbers, parts[number]); // if -1 then not find
+        keyRomanNumbers = Arrays.binarySearch(romanNumbers, parts[number]); // if -1 then not find
+        if (keyArabicNumbers >= 0) {
+            keyArabicNumbers++;
             setDial(Dial.ARABIC);
-            if (number == 0) setFirstElement(Integer.parseInt(parts[number]));
-            if (number == 1) setSecondElement(Integer.parseInt(parts[number]));
+            if (number == 0) setFirstElement(keyArabicNumbers);
+            if (number == 1) setSecondElement(keyArabicNumbers);
+            return Dial.ARABIC;
         }
-        if (Arrays.asList(romanNumbers).contains(parts[number])) {
+        if (keyRomanNumbers >= 0) {
             setDial(Dial.ROMAN);
-            int key = Arrays.binarySearch(romanNumbers, parts[number])+1;
-            if (number == 0) setFirstElement(key);
-            if (number == 1) setSecondElement(key);
+            keyRomanNumbers++;
+            if (number == 0) setFirstElement(keyRomanNumbers);
+            if (number == 1) setSecondElement(keyRomanNumbers);
+            return Dial.ROMAN;
         }
-        return getDial();
+        return null;
     }
 
     public void setFirstElement(int firstElement) {
@@ -158,9 +163,14 @@ public class Calculator implements Arabic, Roman, Operator {
         if (getDial() == Dial.ROMAN) {
             RomanToArabic romanToArabic = new RomanToArabic();
             resultOut = romanToArabic.RomanToArabic(this.result);
-        }else {
+        } else {
             resultOut = Integer.toString(this.result);
         }
         return resultOut;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (this == obj);
     }
 }
