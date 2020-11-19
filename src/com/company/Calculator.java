@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.converter.RomanToArabic;
 import com.company.exception.MathematicalException;
 import com.company.impl.Arabic;
 import com.company.impl.Operator;
@@ -15,6 +16,7 @@ public class Calculator implements Arabic, Roman, Operator {
     private int firstElement;
     private int secondElement;
     private int result;
+    private String resultOut;
 
     /**
      * Calculator calculator = new Calculator("3/ 2 ");
@@ -53,10 +55,7 @@ public class Calculator implements Arabic, Roman, Operator {
     }
 
     public int calculation(boolean testAll) throws MathematicalException {
-        /**
-         * Start for all construction, first go testAll anc other
-         */
-        if (testAll) testAll();
+        testAll();
         switch (getOperatorUsed()) {
             case "*":
                 setResult(getFirstElement() * getSecondElement());
@@ -100,8 +99,9 @@ public class Calculator implements Arabic, Roman, Operator {
         }
         if (Arrays.asList(romanNumbers).contains(parts[number])) {
             setDial(Dial.ROMAN);
-            if (number == 0) setFirstElement(Integer.parseInt(parts[number]));
-            if (number == 1) setSecondElement(Integer.parseInt(parts[number]));
+            int key = Arrays.binarySearch(romanNumbers, parts[number])+1;
+            if (number == 0) setFirstElement(key);
+            if (number == 1) setSecondElement(key);
         }
         return getDial();
     }
@@ -152,5 +152,15 @@ public class Calculator implements Arabic, Roman, Operator {
 
     public int getResult() {
         return result;
+    }
+
+    public String getResultOut() {
+        if (getDial() == Dial.ROMAN) {
+            RomanToArabic romanToArabic = new RomanToArabic();
+            resultOut = romanToArabic.RomanToArabic(this.result);
+        }else {
+            resultOut = Integer.toString(this.result);
+        }
+        return resultOut;
     }
 }

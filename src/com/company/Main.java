@@ -3,6 +3,8 @@ package com.company;
 import com.company.converter.RomanToArabic;
 import com.company.exception.MathematicalException;
 
+import java.util.Scanner;
+
 /**
  * Calculator Arabic and Roman instance
  * Work from 1...10 and I to X
@@ -12,10 +14,13 @@ import com.company.exception.MathematicalException;
  */
 public class Main {
     public static void main(String[] args) throws MathematicalException {
-        Calculator calculator = new Calculator("8* 2 ");
-        //System.out.println(calculator.getResult());
-        RomanToArabic romanToArabic = new RomanToArabic();
-        String result = romanToArabic.RomanToArabic(calculator.getResult());
-        System.out.println(result);
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            System.out.println("Input:");
+            String num = in.next();
+            Calculator calculator = new Calculator(num);
+            System.out.println("Output:");
+            System.out.println(calculator.getResultOut());
+        }
     }
 }
