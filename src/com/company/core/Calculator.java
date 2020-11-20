@@ -92,8 +92,8 @@ public class Calculator implements Arabic, Roman, Operator {
         int keyArabicNumbers = 0;
         int keyRomanNumbers = 0;
         String[] parts = instance.split("[" + getOperatorUsed() + "]");
-        keyArabicNumbers = Arrays.binarySearch(arabicNumbers, parts[number]); // if -1 then not find
-        keyRomanNumbers = Arrays.binarySearch(romanNumbers, parts[number]); // if -1 then not find
+        keyArabicNumbers = Arrays.asList(arabicNumbers).indexOf(parts[number]);// if -1 then not find
+        keyRomanNumbers = Arrays.asList(romanNumbers).indexOf(parts[number]); // if -1 then not find
         if (keyArabicNumbers >= 0) {
             keyArabicNumbers++;
             setDial(Dial.ARABIC);
